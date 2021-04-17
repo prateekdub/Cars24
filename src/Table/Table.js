@@ -9,7 +9,7 @@ const Table = (props) => {
         </tr>)
     })
     return (
-        <React.Fragment>
+        rows.length > 0 && <React.Fragment>
             <table>
                 <thead>
                     <tr>

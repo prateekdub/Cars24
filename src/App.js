@@ -28,10 +28,17 @@ function App() {
     setTableData([...responseArray])
     // comment1sss
   }
+  const focusEvent = () => {
+    if (localStorage['previousSearch']) {
+      const arr = localStorage['previousSearch'].split(',');
+      setOptionList(arr)
+    }
+}
 
   return (
     <div className="App">
-      <SearchBar optionList={optionList} fetchNameFromAPI={fetchNameFromAPI} setResult={setResult}/>
+      <SearchBar optionList={optionList} fetchNameFromAPI={fetchNameFromAPI}
+      setResult={setResult} focusEvent={focusEvent}/>
       <Table data={tableData} />
     </div>
   );

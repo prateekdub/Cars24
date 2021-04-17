@@ -10,10 +10,32 @@ const SearchBar = (prop) => {
     
     const search = () => {
         prop.setResult(searchValue.current.value)
+        if (localStorage['previousSearch']) {
+            const arr = localStorage['previousSearch'].split(',')
+            if (arr.length == 10) {
+                arr.splice(0,1);
+            }
+            if (!arr.includes(searchValue.current.value))
+            {arr.push(searchValue.current.value)}
+            localStorage['previousSearch'] = arr.join(',')
+        } else {
+            localStorage['previousSearch'] = searchValue.current.value;
+        }
+        
     }
+   
     const searchOnList = (e) => {
         prop.setResult(e.target.value)
         setShowOptions(false)
+    }
+    const focusEvent = () => {
+        if (!searchValue.current.value) {
+            setShowOptions(true)
+            prop.focusEvent()
+        }
+    }
+    const blurEvent = () => {
+            setShowOptions(false)
     }
     const option = showOptions && prop.optionList && prop.optionList.map(x => {
         return (<ul onClick={(e) => searchOnList(e)}>
@@ -23,7 +45,8 @@ const SearchBar = (prop) => {
     return (
         <React.Fragment>
             <input className="searchBar" type="text"
-                placeholder="Search.." onChange={onChangeEvent} ref={searchValue} />
+                placeholder="Search.." onChange={onChangeEvent} ref={searchValue} onFocus={focusEvent}
+                onBlur={blurEvent}/>
             {option}
             
             <button onClick={search}>
